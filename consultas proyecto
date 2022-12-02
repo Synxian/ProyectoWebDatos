@@ -1,0 +1,194 @@
+PREFIX http: http://www.w3.org/2011/http#
+PREFIX dbp: http://dbpedia.org/property/
+PREFIX dbo: http://dbpedia.org/ontology/
+PREFIX xsd: http://www.w3.org/2001/XMLSchema#
+PREFIX ex: http://ex.org/
+SELECT (COUNT(?players) as ?count)
+WHERE {
+    ?players http://ex.org/laterality "Right"
+}
+PREFIX http: http://www.w3.org/2011/http#
+PREFIX dbp: http://dbpedia.org/property/
+PREFIX dbo: http://dbpedia.org/ontology/
+PREFIX xsd: http://www.w3.org/2001/XMLSchema#
+PREFIX ex: http://ex.org/
+SELECT (COUNT(?players) as ?count)
+WHERE {
+    ?players ex:laterality "Right"
+}
+
+resultado = 13382
+
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT (COUNT(?players) as ?count)
+WHERE {
+    ?players ex:laterality "Left"
+}
+
+result = 4259
+
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT (COUNT(?players) as ?count)
+WHERE {
+  ?players dbo:birthDate ?birthdate
+  FILTER(?birthdate < "1987-06-24"^^xsd:date)
+}
+
+result=1969
+
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT ?country (max(?height) as ?max_height)
+  WHERE {
+      ?players ex:height ?height .
+      ?players ex:country ?country.
+  } GROUP BY ?country
+  
+  
+  SELECT ?players ?country ?max_height
+WHERE{
+  ?players ex:height ?height_aux .
+  ?players ex:country ?country_aux.
+{
+  SELECT ?country (max(?height) as ?max_height)
+  WHERE {
+      ?players ex:height ?height .
+      ?players ex:country ?country
+  } GROUP BY ?country
+  }
+  FILTER(?height_aux = ?max_height && ?country_aux = ?country)
+} ORDER BY DESC(?max_height)
+
+
+PREFIX db: <http://dbpedia.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT ?players ?country ?max_overall
+WHERE{
+  ?players ex:fifa_score ?overalll_aux .
+  ?players ex:country ?country_aux.
+{
+  SELECT ?country (max(?overall) as ?max_overall)
+  WHERE {
+      ?players ex:fifa_score ?overall .
+      ?players ex:country ?country
+  } GROUP BY ?country
+  }
+  FILTER(?overalll_aux = ?max_overall && ?country_aux = ?country)
+} ORDER BY DESC(?max_overall)
+
+
+PREFIX db: <http://dbpedia.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT ?country (avg(?overall) as ?avg_overall)
+  WHERE {
+      ?players ex:fifa_score ?overall .
+      ?players ex:country ?country
+  } GROUP BY ?country
+ORDER BY DESC (?avg_overall)
+
+PREFIX db: <http://dbpedia.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT (sum(?overall) as ?sum_overall) (count(?overall) as ?count)
+  WHERE {
+      ?players ex:fifa_score ?overall .
+      ?players ex:country ?country
+  } GROUP BY ?country
+ORDER BY DESC (?count)
+
+
+PREFIX db: <http://dbpedia.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT (sum(?wage) as ?wage_total) (sum(?value) as ?value_total)
+  WHERE {
+      ?players ex:worth ?value .
+      ?players ex:salary ?wage .
+  	  ?players dbo:SoccerClub ?club .
+  		FILTER(?club = 'FC Barcelona')
+  }
+  
+ results = wage: 6435000, value:1083610000
+ 
+ 
+PREFIX db: <http://dbpedia.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT ?club (sum(?wage) as ?wage_total) (sum(?value) as ?value_total)
+  WHERE {
+      ?players ex:worth ?value .
+      ?players ex:salary ?wage .
+  	  ?players dbo:SoccerClub ?club .
+} GROUP BY ?club
+ORDER BY DESC(?value_total)
+
+
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX xs: <http://www.w3.org/2001/XMLSchema#>
+PREFIX http: <http://www.w3.org/2011/http#>
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+SELECT ?country (sum(?wage) as ?wage_total) (sum(?value) as ?value_total)
+  WHERE {
+      ?players ex:worth ?value .
+      ?players ex:salary ?wage .
+  	  ?players ex:country ?country .
+} GROUP BY ?country
+ORDER BY DESC(?value_total)
+
+ 
+
+  
+

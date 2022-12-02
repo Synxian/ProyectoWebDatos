@@ -1,0 +1,38 @@
+PREFIX dbp: <http://dbpedia.org/property/>
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX ex: <http://ex.org/>
+CONSTRUCT {
+	?Player a dbo:SoccerPlayer;
+     	dbo:Identifier ?fifa_id ;
+	ex:name ?name;
+	dbo:birthDate ?birthdate ;
+	ex:height ?height;
+	ex:weight ?weight ;
+	ex:country ?country;
+	dbo:SoccerClub ?club;
+	ex:fifa_score ?vg_overall;
+	ex:worth ?value_euro;
+	ex:salary ?salary_euro;
+	ex:laterality ?foot_laterality;
+	dbp:position ?position;
+	ex:jersey_number ?jersey_number.
+}
+FROM <file:players_20.csv> 
+WHERE {
+	BIND (URI(CONCAT('http://ex.org/players/', replace(?short_name," ","_"))) AS ?Player)
+	BIND (xsd:integer(?sofifa_id) as ?fifa_id )
+	BIND (xsd:string(?long_name) as ?name )
+	BIND (xsd:date(?dob) as ?birthdate)
+	BIND (xsd:integer(?height_cm) as ?height)
+	BIND (xsd:integer(?weight_kg) as ?weight)
+	BIND (xsd:string(?nationality) as ?country)
+	BIND (xsd:string(?club) as ?club)
+	BIND (xsd:integer(?overall) as ?vg_overall )
+	BIND (xsd:integer(?value_eur) as ?value_euro )
+	BIND (xsd:integer(?wage_eur) as ?salary_euro )
+	BIND (xsd:string(?preferred_foot) as ?foot_laterality)
+	BIND (xsd:string(?nation_position) as ?position)
+	BIND (xsd:integer(?nation_jersey_number) as ?jersey_number)
+}
+
